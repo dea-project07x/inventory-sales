@@ -19,30 +19,29 @@ Dibuat untuk UTS Web Programming 2 — Integrated Laravel Project.
 
 - PHP >= 8.2 (dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`)
 - Composer 2
-- MySQL 8 / MariaDB 10.6+
-- Node.js 18+ dan npm (untuk `npm run build`)
-- Laravel 11 atau 12
+- MySQL 8 / MariaDB 10.4+ (mis. lewat XAMPP)
+- Git
+- Node.js **tidak wajib**: tampilan memakai Bootstrap, Bootstrap Icons, dan Google Fonts dari CDN (butuh koneksi internet)
+- Dikembangkan dan diuji dengan Laravel 12 dan PHP 8.2
 
 ## 3. Installation
 
-Repository ini berisi **lapisan aplikasi** (app, routes, views, migration, seeder, test) di atas skeleton Laravel resmi.
-
 ```bash
-# 1. Buat project Laravel baru
-composer create-project laravel/laravel inventory-sales
+# 1. Clone repository
+git clone https://github.com/dea-project07x/inventory-sales.git
 cd inventory-sales
 
-# 2. Salin SELURUH isi folder repo ini ke root project (timpa file yang sudah ada)
-#    File yang ditimpa: app/Models/User.php, app/Providers/AppServiceProvider.php,
-#    routes/web.php, database/seeders/DatabaseSeeder.php, phpunit.xml, .env.example, README.md
-
-# 3. Siapkan environment
+# 2. Pasang dependency PHP
 composer install
+
+# 3. Salin file environment (Windows PowerShell: Copy-Item .env.example .env)
 cp .env.example .env
+
+# 4. Buat application key
 php artisan key:generate
 ```
 
-> Jika repository ini sudah lengkap (sudah berisi skeleton Laravel), cukup jalankan langkah `composer install` dan seterusnya.
+Langkah selanjutnya (database dan menjalankan aplikasi) ada di bagian 4 dan 5.
 
 ## 4. Environment Setup
 
@@ -64,12 +63,10 @@ DB_PASSWORD=<password MySQL lokal Anda>
 
 ```bash
 php artisan migrate --seed
-npm install
-npm run build
 php artisan serve
 ```
 
-Buka http://localhost:8000. Seluruh tabel dibuat lewat migration (tidak bergantung pada database manual). Seeder menyiapkan 5 kategori, 3 pemasok, 12 produk (beberapa sengaja stok rendah), dan 2 akun demo. Seeder aman dijalankan ulang.
+Buka http://127.0.0.1:8000. Seluruh tabel dibuat lewat migration (tidak bergantung pada database manual). Seeder menyiapkan 5 kategori, 3 pemasok, 12 produk (beberapa sengaja stok rendah), dan 2 akun demo. Seeder aman dijalankan ulang.
 
 Menjalankan test (memakai SQLite in-memory, tidak menyentuh database MySQL):
 
@@ -198,14 +195,31 @@ Route (routes/web.php) → Middleware (auth, can:) → Controller
 
 ## 10. Testing
 
-`php artisan test` menjalankan skenario minimum: guest ditolak, password salah ditolak, SKU duplikat & harga negatif ditolak, pembelian menambah stok, penjualan mengurangi stok, stok tidak cukup ditolak tanpa perubahan data, rollback saat satu item gagal, staff tidak bisa mengakses fungsi Admin, serta search/filter/pagination dan dashboard. Tempelkan screenshot hasil `php artisan test` di folder `docs/` sebagai bukti pengujian.
+`php artisan test` menjalankan skenario minimum: guest ditolak, password salah ditolak, SKU duplikat & harga negatif ditolak, pembelian menambah stok, penjualan mengurangi stok, stok tidak cukup ditolak tanpa perubahan data, rollback saat satu item gagal, staff tidak bisa mengakses fungsi Admin, serta search/filter/pagination dan dashboard. Hasil terakhir: **34 test lulus (112 assertions)**, lihat bagian Screenshots.
+
+## Screenshots
+
+Bukti tampilan dan pengujian ada di folder [`docs/screenshots`](docs/screenshots).
+
+| | |
+|---|---|
+| **Login** | **Dashboard** |
+| ![Login](docs/screenshots/01-login.png) | ![Dashboard](docs/screenshots/02-dashboard.png) |
+| **Daftar produk** | **Daftar pembelian** |
+| ![Produk](docs/screenshots/03-produk.png) | ![Pembelian](docs/screenshots/04-pembelian.png) |
+| **Detail pembelian** | **Daftar penjualan** |
+| ![Detail pembelian](docs/screenshots/05-detail-pembelian.png) | ![Penjualan](docs/screenshots/06-penjualan.png) |
+| **Detail penjualan** | **Penjualan ditolak: stok tidak cukup** |
+| ![Detail penjualan](docs/screenshots/07-detail-penjualan.png) | ![Stok tidak cukup](docs/screenshots/08-stok-tidak-cukup.png) |
+| **Staff mengakses halaman Admin: 403** | **Hasil `php artisan test`: 34 passed** |
+| ![403](docs/screenshots/09-akses-staff-403.png) | ![Hasil test](docs/screenshots/10-hasil-test.png) |
 
 ## 11. Known Limitations
 
 - Pembelian langsung berstatus *completed* (tidak ada alur draft → konfirmasi).
 - Tidak ada payment gateway, multi-warehouse, multi-currency, laporan PDF/Excel (di luar ruang lingkup).
 - Staff hanya melihat transaksi miliknya sendiri.
-- UI memakai Bootstrap dari CDN sehingga membutuhkan koneksi internet saat dijalankan.
+- UI memakai Bootstrap, Bootstrap Icons, dan Google Fonts dari CDN sehingga membutuhkan koneksi internet saat dijalankan.
 - `lockForUpdate()` hanya efektif pada engine yang mendukung row locking (MySQL/InnoDB); pada SQLite (test) tidak berpengaruh.
 
 ## Atribusi
