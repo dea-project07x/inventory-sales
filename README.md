@@ -14,6 +14,7 @@ Dibuat untuk UTS Web Programming 2 — Integrated Laravel Project.
 | Dashboard | Total produk, penjualan hari ini/bulan ini, jumlah transaksi, produk stok rendah (query agregat dari DB) |
 | Search & report | Cari SKU/nama, filter kategori, filter tanggal & status, pagination, detail transaksi |
 | Pembatalan | Admin dapat membatalkan transaksi; stok dipulihkan secara konsisten |
+| Riwayat & laporan | Admin melihat riwayat pergerakan stok (masuk/keluar), ringkasan penjualan & pembelian per periode, dan 5 produk terlaris |
 
 ## 2. Requirements
 
@@ -188,6 +189,7 @@ Route (routes/web.php) → Middleware (auth, can:) → Controller
 |---|---|
 | `app/Services/SaleService.php` | Logika penjualan & pembatalan |
 | `app/Services/PurchaseService.php` | Logika pembelian & pembatalan |
+| `app/Http/Controllers/ReportController.php` | Riwayat pergerakan stok & laporan ringkas (Admin) |
 | `app/Http/Requests/*` | Validasi server-side |
 | `app/Providers/AppServiceProvider.php` | Definisi Gate (hak akses) |
 | `database/migrations/*` | Skema, FK, index |
@@ -195,7 +197,7 @@ Route (routes/web.php) → Middleware (auth, can:) → Controller
 
 ## 10. Testing
 
-`php artisan test` menjalankan skenario minimum: guest ditolak, password salah ditolak, SKU duplikat & harga negatif ditolak, pembelian menambah stok, penjualan mengurangi stok, stok tidak cukup ditolak tanpa perubahan data, rollback saat satu item gagal, staff tidak bisa mengakses fungsi Admin, serta search/filter/pagination dan dashboard. Hasil terakhir: **34 test lulus (112 assertions)**, lihat bagian Screenshots.
+`php artisan test` menjalankan skenario minimum: guest ditolak, password salah ditolak, SKU duplikat & harga negatif ditolak, pembelian menambah stok, penjualan mengurangi stok, stok tidak cukup ditolak tanpa perubahan data, rollback saat satu item gagal, staff tidak bisa mengakses fungsi Admin, serta search/filter/pagination dan dashboard. Hasil terakhir: **39 test lulus (126 assertions)**. Screenshot `10-hasil-test` diambil sebelum fitur laporan ditambahkan, sehingga masih menampilkan 34 test.
 
 ## Screenshots
 
@@ -211,8 +213,10 @@ Bukti tampilan dan pengujian ada di folder [`docs/screenshots`](docs/screenshots
 | ![Detail pembelian](docs/screenshots/05-detail-pembelian.png) | ![Penjualan](docs/screenshots/06-penjualan.png) |
 | **Detail penjualan** | **Penjualan ditolak: stok tidak cukup** |
 | ![Detail penjualan](docs/screenshots/07-detail-penjualan.png) | ![Stok tidak cukup](docs/screenshots/08-stok-tidak-cukup.png) |
-| **Staff mengakses halaman Admin: 403** | **Hasil `php artisan test`: 34 passed** |
+| **Staff mengakses halaman Admin: 403** | **Hasil `php artisan test` (sebelum fitur laporan: 34 test)** |
 | ![403](docs/screenshots/09-akses-staff-403.png) | ![Hasil test](docs/screenshots/10-hasil-test.png) |
+| **Riwayat & laporan (Admin)** | |
+| ![Riwayat dan laporan](docs/screenshots/11-riwayat-laporan.png) | |
 
 ## 11. Known Limitations
 

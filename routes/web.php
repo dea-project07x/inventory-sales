@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('products', ProductController::class)->except(['index', 'show']);
         Route::resource('categories', CategoryController::class)->except(['show']);
         Route::resource('suppliers', SupplierController::class)->except(['show']);
+        Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     });
     Route::middleware('can:manage-users')->group(function () {
         Route::resource('users', UserController::class)->except(['show']);

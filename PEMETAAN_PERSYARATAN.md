@@ -28,6 +28,7 @@ Dokumen ini membantu verifikasi dan persiapan demo / code ownership interview.
 | Supplier index/create/edit | `suppliers/*` |
 | User/role management (Admin) | `users/*` |
 | Low-stock list | `products/low-stock` |
+| Laporan & riwayat pergerakan stok (Admin) | `reports/index`, `ReportController`, `tests/Feature/ReportTest.php` |
 | Purchase list/create/detail | `purchases/*` |
 | Sales list/create/detail | `sales/*` |
 | Multi-item per transaksi | `partials/transaction-items` + `item-row` |
