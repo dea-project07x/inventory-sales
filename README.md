@@ -18,7 +18,7 @@ Dibuat untuk UTS Web Programming 2 — Integrated Laravel Project.
 
 ## 2. Requirements
 
-- PHP >= 8.2 (dengan ekstensi `pdo_mysql`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`)
+- PHP >= 8.2 (dengan ekstensi `pdo_mysql`, `pdo_sqlite`, `mbstring`, `openssl`, `tokenizer`, `xml`, `ctype`, `json`)
 - Composer 2
 - MySQL 8 / MariaDB 10.4+ (mis. lewat XAMPP)
 - Git
@@ -98,7 +98,7 @@ Akun berikut hanya data dummy untuk demo (bukan kredensial pribadi):
   - `lockForUpdate()` pada baris produk mencegah overselling pada transaksi bersamaan; produk diproses berurutan `product_id` untuk menghindari deadlock.
   - Transaksi selesai tidak diedit; hanya bisa **dibatalkan** (stok dipulihkan). Pembatalan pembelian ditolak jika stok hasil pembelian itu sudah terpakai.
   - Produk/kategori/pemasok/pengguna yang sudah dipakai tidak bisa dihapus (larangan hapus + foreign key `RESTRICT`).
-- **UI** — layout Blade reusable (Bootstrap 5 via CDN), navigasi, pesan sukses/error, input lama dipertahankan saat validasi gagal, form multi-item dinamis, responsive.
+- **UI** — layout Blade reusable (Bootstrap 5 via CDN) dengan tampilan ceria dan efek sparkle saat menu diklik, navigasi, pesan sukses/error, input lama dipertahankan saat validasi gagal, form multi-item dinamis, responsive.
 - **Keamanan dasar** — CSRF (`@csrf`), escaping output (`{{ }}`), password hashing, rate-limit login, mass-assignment protection (`$fillable`), query berparameter.
 
 ## 8. ERD
@@ -197,7 +197,7 @@ Route (routes/web.php) → Middleware (auth, can:) → Controller
 
 ## 10. Testing
 
-`php artisan test` menjalankan skenario minimum: guest ditolak, password salah ditolak, SKU duplikat & harga negatif ditolak, pembelian menambah stok, penjualan mengurangi stok, stok tidak cukup ditolak tanpa perubahan data, rollback saat satu item gagal, staff tidak bisa mengakses fungsi Admin, serta search/filter/pagination dan dashboard. Hasil terakhir: **39 test lulus (126 assertions)**. Screenshot `10-hasil-test` diambil sebelum fitur laporan ditambahkan, sehingga masih menampilkan 34 test.
+`php artisan test` menjalankan skenario minimum: guest ditolak, password salah ditolak, SKU duplikat & harga negatif ditolak, pembelian menambah stok, penjualan mengurangi stok, stok tidak cukup ditolak tanpa perubahan data, rollback saat satu item gagal, staff tidak bisa mengakses fungsi Admin, serta search/filter/pagination dan dashboard. Hasil terakhir: **39 test lulus (126 assertions)**.
 
 ## Screenshots
 
@@ -213,7 +213,7 @@ Bukti tampilan dan pengujian ada di folder [`docs/screenshots`](docs/screenshots
 | ![Detail pembelian](docs/screenshots/05-detail-pembelian.png) | ![Penjualan](docs/screenshots/06-penjualan.png) |
 | **Detail penjualan** | **Penjualan ditolak: stok tidak cukup** |
 | ![Detail penjualan](docs/screenshots/07-detail-penjualan.png) | ![Stok tidak cukup](docs/screenshots/08-stok-tidak-cukup.png) |
-| **Staff mengakses halaman Admin: 403** | **Hasil `php artisan test` (sebelum fitur laporan: 34 test)** |
+| **Staff mengakses halaman Admin: 403** | **Hasil `php artisan test` (39 test lulus)** |
 | ![403](docs/screenshots/09-akses-staff-403.png) | ![Hasil test](docs/screenshots/10-hasil-test.png) |
 | **Riwayat & laporan (Admin)** | |
 | ![Riwayat dan laporan](docs/screenshots/11-riwayat-laporan.png) | |
